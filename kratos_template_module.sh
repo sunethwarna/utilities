@@ -2,6 +2,7 @@ export KRATOS_PATH=$1
 export KRATOS_BUILD_TYPE=$2
 export KRATOS_DEFAULT_TEST_APPLICATIONS="FluidDynamicsApplication"
 export KRATOS_SYNC_PATH="applications/RANSApplication"
+export KRATOS_TEST_PATH=$(pwd)
 export OMP_NUM_THREADS=10
 
 echo "***********************************************************"
@@ -13,7 +14,7 @@ else
     echo "      Old Compilation Environment Initialized at:     "
     export KRATOS_BUILD_PATH=$KRATOS_PATH
 fi
-echo $KRATOS_PATH
+echo "       $KRATOS_PATH"
 echo "**********************************************************"
 
 export PATH=$KRATOS_BUILD_PATH:$PATH
