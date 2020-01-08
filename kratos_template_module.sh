@@ -46,11 +46,44 @@ kratos_sync_statik_head()
     echo "---- Synching kratos at $KRATOS_PATH ----"
     kratos_name=$(echo $KRATOS_PATH | rev | cut -d"/" -f1 | rev)
     echo "------- Synching applications"
-    rsync -avurcz $KRATOS_PATH/applications/ sunethw@head.st.bv.tum.de:/home/sunethw/software/$kratos_name/applications/
+    rsync -avurcz $KRATOS_PATH/applications/ sunethw@head.st.bv.tum.de:~/software/$kratos_name/applications/
     echo "------- Synching kratos"
     rsync -avurcz $KRATOS_PATH/kratos/ sunethw@head.st.bv.tum.de:~/software/$kratos_name/kratos/
     echo "------- Synching external_libraries"
     rsync -avucrz $KRATOS_PATH/external_libraries/ sunethw@head.st.bv.tum.de:~/software/$kratos_name/external_libraries/
+    ssh sunethw@head.st.bv.tum.de "echo $(date "+%Y-%m-%d %H:%M:%S") > ~/software/$kratos_name/clone_time_stamp.dat"
+}
+
+kratos_clone_bridge()
+{
+    echo "---- Cloning kratos at $KRATOS_PATH ----"
+    echo "-------- Creating compressed archive..."
+    current_pwd=$(pwd)
+    kratos_name=$(echo $KRATOS_PATH | rev | cut -d"/" -f1 | rev)
+    cd ~/software
+    if [ -f "kratos_bridge_ssh.zip" ]
+    then
+        rm -f kratos_bridge_ssh.zip
+    fi
+    zip -rq kratos_bridge_ssh.zip $kratos_name -x $kratos_name/bin/**\* $kratos_name/build/**\* -x $kratos_name/.git/**\* -x$kratos_name/.vscode/**\*
+    echo "-------- Copying archive..."
+    scp ~/software/kratos_bridge_ssh.zip suneth@roompc-next4.st.bv.tum.de:~/software/
+    rm -f kratos_bridge_ssh.zip
+    echo "-------- Expanding archive..."
+    ssh suneth@roompc-next4.st.bv.tum.de "cd ~/software/ && if [ -d $kratos_name ]; then rm -rf $kratos_name; fi && unzip -q kratos_bridge_ssh.zip && rm -f kratos_bridge_ssh.zip && echo $(date "+%Y-%m-%d %H:%M:%S") > $kratos_name/clone_time_stamp.dat"
+    cd $current_pwd
+}
+
+kratos_sync_bridge()
+{
+    echo "---- Synching kratos at $KRATOS_PATH ----"
+    kratos_name=$(echo $KRATOS_PATH | rev | cut -d"/" -f1 | rev)
+    echo "------- Synching applications"
+    rsync -avurcz $KRATOS_PATH/applications/ suneth@roompc-next4.st.bv.tum.de:~/software/$kratos_name/applications/
+    echo "------- Synching kratos"
+    rsync -avurcz $KRATOS_PATH/kratos/ suneth@roompc-next4.st.bv.tum.de:~/software/$kratos_name/kratos/
+    echo "------- Synching external_libraries"
+    rsync -avucrz $KRATOS_PATH/external_libraries/ suneth@roompc-next4.st.bv.tum.de:~/software/$kratos_name/external_libraries/
     ssh sunethw@head.st.bv.tum.de "echo $(date "+%Y-%m-%d %H:%M:%S") > ~/software/$kratos_name/clone_time_stamp.dat"
 }
 
