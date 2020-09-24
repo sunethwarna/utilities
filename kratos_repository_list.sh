@@ -8,10 +8,14 @@ for filename in $SOFTWARE_PATH/*; do
     then
         if [ -f "$filename/scripts/configure.sh" ]
         then
-            alias ${var_name}_release="source $SOFTWARE_PATH/modules/kratos_template_module.sh $filename Release"
-            alias ${var_name}_release_with_debug_info="source $SOFTWARE_PATH/modules/kratos_template_module.sh $filename RelWithDebInfo"
-            alias ${var_name}_debug="source $SOFTWARE_PATH/modules/kratos_template_module.sh $filename Debug"
-            alias ${var_name}_full_debug="source $SOFTWARE_PATH/modules/kratos_template_module.sh $filename FullDebug"
+            alias ${var_name}_release_gcc="source $SOFTWARE_PATH/modules/kratos_template_module.sh $filename Release gcc"
+            alias ${var_name}_release_with_debug_info_gcc="source $SOFTWARE_PATH/modules/kratos_template_module.sh $filename RelWithDebInfo gcc"
+            alias ${var_name}_debug_gcc="source $SOFTWARE_PATH/modules/kratos_template_module.sh $filename Debug gcc"
+            alias ${var_name}_full_debug_gcc="source $SOFTWARE_PATH/modules/kratos_template_module.sh $filename FullDebug gcc"
+            alias ${var_name}_release_clang="source $SOFTWARE_PATH/modules/kratos_template_module.sh $filename Release clang"
+            alias ${var_name}_release_with_debug_info_clang="source $SOFTWARE_PATH/modules/kratos_template_module.sh $filename RelWithDebInfo clang"
+            alias ${var_name}_debug_clang="source $SOFTWARE_PATH/modules/kratos_template_module.sh $filename Debug clang"
+            alias ${var_name}_full_debug_clang="source $SOFTWARE_PATH/modules/kratos_template_module.sh $filename FullDebug clang"
         else
             alias $var_name="source $SOFTWARE_PATH/modules/kratos_template_module.sh $filename"
         fi
